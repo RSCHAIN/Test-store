@@ -1,65 +1,73 @@
-import Image from "next/image";
+"use client";
+
+import { useRouter } from "next/navigation";
+
+const PRODUCTS = [
+  { id: "prod_001", name: "Café de spécialité", price: 24.99, currency: "EUR", emoji: "☕", description: "Origine Éthiopie, torréfaction artisanale" },
+  { id: "prod_002", name: "Carnet en cuir", price: 39.90, currency: "EUR", emoji: "📓", description: "Fait main, papier recyclé 200g" },
+  { id: "prod_003", name: "Bougie de soja", price: 18.50, currency: "EUR", emoji: "🕯️", description: "Parfum figue & cèdre, 60h de combustion" },
+  { id: "prod_004", name: "Thé grand cru", price: 32.00, currency: "EUR", emoji: "🍵", description: "Darjeeling first flush, récolte 2025" },
+];
+
+const MERCHANT_DID = "did:sigil:0xMERCHANT";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main style={{ fontFamily: "'Syne', sans-serif", background: "#fafaf8", minHeight: "100vh", padding: "48px 24px" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
+
+      {/* Header */}
+      <div style={{ maxWidth: 960, margin: "0 auto 48px", textAlign: "center" }}>
+        <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#a8832a", marginBottom: 8 }}>Boutique de démonstration</p>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 48, fontWeight: 300, color: "#1a1814" }}>
+          Maison <em style={{ fontStyle: "italic", color: "#a8832a" }}>Sigil</em>
+        </h1>
+        <p style={{ fontSize: 13, color: "rgba(26,24,20,0.45)", marginTop: 8 }}>
+          Chaque achat génère une preuve cryptographique vérifiable
+        </p>
+      </div>
+
+      {/* Grille produits */}
+      <div style={{ maxWidth: 960, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 24 }}>
+        {PRODUCTS.map((p) => (
+          <div
+            key={p.id}
+            style={{ background: "#fff", border: "1px solid rgba(26,24,20,0.08)", padding: "32px 24px 24px", transition: "box-shadow 0.2s", position: "relative" }}
+            onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(26,24,20,0.1)")}
+            onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <div style={{ fontSize: 40, marginBottom: 16 }}>{p.emoji}</div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, color: "#1a1814", marginBottom: 8 }}>{p.name}</h2>
+            <p style={{ fontSize: 12, color: "rgba(26,24,20,0.45)", marginBottom: 16, lineHeight: 1.6 }}>{p.description}</p>
+            <p style={{ fontSize: 18, fontWeight: 600, color: "#a8832a", marginBottom: 20 }}>{p.price.toFixed(2)} {p.currency}</p>
+
+            {/* Boutons */}
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                onClick={() => router.push(`/checkout?id=${p.id}&name=${encodeURIComponent(p.name)}&price=${p.price}&currency=${p.currency}`)}
+                style={{ flex: 2, background: "#1a1814", color: "#fafaf8", border: "none", padding: "10px 8px", fontFamily: "'Syne', sans-serif", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer", transition: "opacity 0.2s" }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+                onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+              >
+                Acheter →
+              </button>
+              <button
+                onClick={() => router.push(`/reviews?merchantDid=${encodeURIComponent(MERCHANT_DID)}&product=${encodeURIComponent(p.name)}`)}
+                style={{ flex: 1, background: "none", border: "1px solid rgba(26,24,20,0.1)", padding: "10px 8px", fontFamily: "'Syne', sans-serif", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer", color: "rgba(26,24,20,0.5)", transition: "border-color 0.2s, color 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(168,131,42,0.4)"; e.currentTarget.style.color = "#a8832a"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(26,24,20,0.1)"; e.currentTarget.style.color = "rgba(26,24,20,0.5)"; }}
+              >
+                Avis
+              </button>
+            </div>
+
+            {/* Barre dorée bas */}
+            <div style={{ position: "absolute", bottom: 0, left: 24, right: 24, height: 1, background: "linear-gradient(90deg, transparent, rgba(168,131,42,0.3), transparent)" }} />
+          </div>
+        ))}
+      </div>
+    </main>
   );
 }
